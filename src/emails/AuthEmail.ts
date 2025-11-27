@@ -1,3 +1,4 @@
+import { getEnv } from "../config/env";
 import { transport } from "../config/nodemailer";
 
 type EmailProps = {
@@ -12,9 +13,13 @@ export class AuthEmail {
       to: user.email,
       subject: "CashTrackr - confirma tu cuenta",
       html: `
-            <p>Hola: ${user.username}, has creado tu cuenta en CashTrackr, ya esta casi lista</p>
+            <p>Hola: ${
+              user.username
+            }, has creado tu cuenta en CashTrackr, ya esta casi lista</p>
             <p>Visita el siguiente enlace:</p>
-            <a href='#'>Confirmar cuenta</a>
+            <a href="${getEnv("FRONTEND_URL")}/auth/confirm-account?account=${
+        user.email
+      }">Confirmar cuenta</a>
             <p>ingresa el codigo: <b>${user.token}</b></p>
         `,
     });
@@ -26,9 +31,13 @@ export class AuthEmail {
       to: user.email,
       subject: "CashTrackr - confirma tu cuenta",
       html: `
-            <p>Hola: ${user.username}, has solicitado restablecer tu password</p>
+            <p>Hola: ${
+              user.username
+            }, has solicitado restablecer tu password</p>
             <p>Visita el siguiente enlace:</p>
-            <a href='#'>Restablecer password</a>
+            <a href="${getEnv(
+              "FRONTEND_URL"
+            )}/auth/new-password">Restablecer password</a>
             <p>ingresa el codigo: <b>${user.token}</b></p>
         `,
     });

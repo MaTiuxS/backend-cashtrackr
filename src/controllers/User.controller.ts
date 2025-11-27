@@ -30,17 +30,23 @@ export class UserController {
 
       await user.save();
 
-      await AuthEmail.sendConfirmationEmail({
-        username: user.username,
-        email: user.email,
-        token: user.token.toString(),
-      });
+      try {
+        await AuthEmail.sendConfirmationEmail({
+          username: user.username,
+          email: user.email,
+          token: user.token.toString(),
+        });
+      } catch (error) {
+        return res.status(401).json({
+          error:
+            "Tu cuenta fue creada, pero no pudimos enviar el correo de confirmación. Intenta reenviar más tarde.",
+        });
+      }
+
       return res.status(201).json("Cuenta creada correctamente");
     } catch (error) {
       // console.log(error);
-      return res
-        .status(500)
-        .json({ error: "Hubo un error al crear la cuenta" });
+      return res.status(500).json("Hubo un error al crear la cuenta");
     }
   };
 
@@ -109,7 +115,7 @@ export class UserController {
       token: user.token,
     });
 
-    return res.status(201).json("Revisa tu email para las instruccione");
+    return res.status(201).json("Revisa tu email para las instrucciones");
   };
 
   static validateToken = async (req: Request, res: Response) => {
@@ -121,7 +127,7 @@ export class UserController {
       return res.status(404).json({ error: error.message });
     }
 
-    return res.status(200).json("Token Valido");
+    return res.status(200).json("Token valido, asigna un nuevo password");
   };
 
   static resetPasswordWithToken = async (req: Request, res: Response) => {

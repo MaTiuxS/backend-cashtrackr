@@ -26,10 +26,7 @@ export const createUserRules = [
   body("email")
     .isEmail()
     .withMessage("Correo electrónico inválido")
-    .normalizeEmail()
-    .trim()
-    .toLowerCase()
-    .escape(),
+    .normalizeEmail(),
 ];
 
 export const listUserRules = [
