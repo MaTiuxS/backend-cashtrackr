@@ -1,0 +1,31 @@
+
+services:
+  myDB:
+    image: postgres:16-alpine
+    container_name: postgres-cashtrackr
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=Libre123
+      - POSTGRES_DB=cashtrackr-db
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+  
+  pdAdmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    restart: always
+    depends_on:
+      - myDB
+    ports:
+      - 8080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=lunxito.craft@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=Libre123@
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+      - ./pgadmin:/certs/server.cert
+      - ./pgadmin:/certs/server.key
+      - ./pgadmin:/pgadmin4/servers.json

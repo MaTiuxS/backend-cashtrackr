@@ -115,3 +115,18 @@ export const updateCurrentPassword = [
 export const checkPasswordUser = [
   body("password").notEmpty().withMessage("El password no puede ir vacio"),
 ];
+
+export const updateProfileUser = [
+  body("username")
+    .notEmpty()
+    .withMessage("El nombre no puede ir vacio")
+    .isLength({ min: 5, max: 30 })
+    .withMessage("El nombre debe tener entre 5 y 30 caracteres")
+    .trim()
+    .toLowerCase()
+    .escape(),
+  body("email")
+    .isEmail()
+    .withMessage("El correo electronico no es valido")
+    .normalizeEmail(),
+];

@@ -9,6 +9,7 @@ import {
   forgotPasswordRules,
   loginUserUles,
   updateCurrentPassword,
+  updateProfileUser,
 } from "../validator/user.validator";
 import { limiter } from "../config/limiter";
 import { authenticate } from "../middleware/auth";
@@ -61,5 +62,12 @@ router.post(
   authenticate,
   validate(checkPasswordUser),
   UserController.checkPasswordUser
+);
+
+router.put(
+  "/user",
+  authenticate,
+  validate(updateProfileUser),
+  UserController.profileUpdateUser
 );
 export default router;

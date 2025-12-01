@@ -199,4 +199,33 @@ export class UserController {
 
     return res.json("El password es correcto");
   };
+
+  static profileUpdateUser = async (req: Request, res: Response) => {
+    const { username, email } = req.body;
+
+    try {
+      const { id } = req.user!;
+
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser && existingUser.id !== id) {
+        const error = new Error("El correo ya se encuentra en uso");
+        return res.status(403).json({ error: error.message });
+      }
+
+      await User.update(
+        { email, username },
+        {
+          where: { id },
+        }
+      );
+
+      return res.json("El perfil se actualizo correctamente");
+    } catch (error) {
+      // console.log(error)
+      const err = new Error(
+        "Error al actualizar el perfil, intente de nuevo mas tarde..."
+      );
+      return res.status(401).json({ error: err.message });
+    }
+  };
 }

@@ -9,7 +9,7 @@ import {
   listExpenseRules,
   updatedExpenseRules,
 } from "../validator/expense.validator";
-import { validateExpenseExists } from "../middleware/expense";
+import { belongsToBudget, validateExpenseExists } from "../middleware/expense";
 const router: Router = Router({ mergeParams: true });
 
 router.use(validate(listBudgetRules));
@@ -21,18 +21,21 @@ router.get(
   "/:expenseId",
   validate(listExpenseRules),
   validateExpenseExists,
+  belongsToBudget,
   ExpenseController.getById
 );
 router.put(
   "/:expenseId",
   validate(updatedExpenseRules),
   validateExpenseExists,
+  belongsToBudget,
   ExpenseController.updateById
 );
 router.delete(
   "/:expenseId",
   validate(deleteExpenseParam),
   validateExpenseExists,
+  belongsToBudget,
   ExpenseController.deleteById
 );
 
